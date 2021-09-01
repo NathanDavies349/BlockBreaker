@@ -25,6 +25,7 @@ class Ball():
         self.rect = Rect(self.x, self.y, self.ball_radius*2, self.ball_radius*2)
         self.speed_x: int = 4
         self.speed_y: int = -4#negative is going up the screen
+        self.max_speed: int = 5
         self.game_over: int = 0
         #ball colours
         self.ball_colour = (142, 135, 123)
@@ -34,16 +35,30 @@ class Ball():
         pygame.draw.circle(screen, self.ball_colour, (self.rect.x + self.ball_radius, self.rect.y + self.ball_radius), self.ball_radius)#when drawing a circle need to define the x and y centre points and a radius
         pygame.draw.circle(screen, self.ball_outline, (self.rect.x + self.ball_radius, self.rect.y + self.ball_radius), self.ball_radius, 3)#mumber is line thickness
 
-    def move(self) -> int:
-
+    def move(self, paddle) -> int:
+        collision_threshold: int = 5
         #check for wall collision
         if self.rect.left < 0 or self.rect.right > GV.screen_width:
             self.speed_x *= -1
         #check for top and bottom collision
         if self.rect.top < 0:
             self.speed_y *= -1
-        elif self.rect.bottom > GV.screen_height:
+        if self.rect.bottom > GV.screen_height:
             self.game_over = -1
+        
+        #look for paddle collision
+        if self.rect.colliderect(paddle):
+            #top collision
+            if abs(self.rect.bottom - paddle.rect.top) < collision_threshold and self.speed_y > 0:#ball must be travelling downwards, could get stuck in a collisional loop if this is not implemented
+                self.speed_y *= -1
+                self.speed_x += paddle.direction
+                if self.speed_x > self.max_speed:
+                    self.speed_x = self.max_speed
+                elif self.speed_x < 0 and self.speed_x < -self.max_speed:#is the <0 condition necessary
+                    self.speed_x = -self.max_speed
+            else:#collision with side of the paddle
+                self.speed_x *= -1
+
 
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
@@ -75,7 +90,7 @@ while run:
 
     #draw ball
     ball.draw()
-    ball.move()
+    ball.move(player_paddle)
 
 
     for event in pygame.event.get():
