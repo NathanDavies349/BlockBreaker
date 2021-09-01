@@ -8,8 +8,6 @@ from pygame.locals import *
 
 
 pygame.init()
-#defining colours
-
 
 #initialising the screen
 screen = pygame.display.set_mode((GV.screen_width,GV.screen_height))
