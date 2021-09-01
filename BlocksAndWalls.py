@@ -66,4 +66,4 @@ class Wall():
                 block.set_block_colour()
                 pygame.draw.rect(window, block.colour, block.rectangle)
                 #add border to each block
-                pygame.draw.rect(window, GV.background, block.rectangle, 2)#mumber is line thickness
+                pygame.draw.rect(window, GV.background_colour, block.rectangle, 2)#mumber is line thickness
