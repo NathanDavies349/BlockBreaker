@@ -16,12 +16,12 @@ pygame.display.set_caption('Breakout')
 game_clock = pygame.time.Clock()
 fps: int = 60#sets the framerate that the clock will run at instead of defaulting to maximum possible
 
-
 #create wall
 wall = BW.Wall()
-wall.create_wall()
+
 #create paddle
 player_paddle = PB.Paddle()
+
 #create ball
 ball = PB.Ball(player_paddle.x + (player_paddle.width//2), player_paddle.y - player_paddle.height)
 

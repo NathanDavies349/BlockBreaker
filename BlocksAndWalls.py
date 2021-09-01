@@ -26,13 +26,6 @@ class Block():
 
 #block wall class
 class Wall():
-    def __init__(self) -> None:
-        #define game variables
-        self.columns: int = 6
-        self.rows: int = 6
-        self.width: int = GV.screen_width // self.columns
-        self.height: int = 50
-
     def create_wall(self):    
         self.blocks = []
         for row in range(self.rows):
@@ -56,6 +49,16 @@ class Wall():
                 block_row.append(Block(rectangle, strength))
             #append row to full list of blocks
             self.blocks.append(block_row)
+    
+    def __init__(self) -> None:
+        #define game variables
+        self.columns: int = 6
+        self.rows: int = 6
+        self.width: int = GV.screen_width // self.columns
+        self.height: int = 50
+        self.create_wall()
+
+    
 
     def draw_wall(self, window):
         for row in self.blocks:
