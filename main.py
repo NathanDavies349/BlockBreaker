@@ -13,7 +13,7 @@ pygame.init()
 screen = pygame.display.set_mode((GV.screen_width,GV.screen_height))
 pygame.display.set_caption('Breakout')
 #game variables
-game_clock = pygame.time.Clock()#clock object
+game_clock = pygame.time.Clock()
 fps: int = 60#sets the framerate that the clock will run at instead of defaulting to maximum possible
 
 
