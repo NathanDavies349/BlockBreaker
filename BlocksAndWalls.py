@@ -25,7 +25,7 @@ class Block():
 
 
 #block wall class
-class Wall(Block):
+class Wall():
     def __init__(self) -> None:
         #define game variables
         self.columns: int = 6
