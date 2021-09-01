@@ -35,8 +35,43 @@ class Ball():
         pygame.draw.circle(screen, self.ball_colour, (self.rect.x + self.ball_radius, self.rect.y + self.ball_radius), self.ball_radius)#when drawing a circle need to define the x and y centre points and a radius
         pygame.draw.circle(screen, self.ball_outline, (self.rect.x + self.ball_radius, self.rect.y + self.ball_radius), self.ball_radius, 3)#mumber is line thickness
 
-    def move(self, paddle) -> int:
+    def move(self, paddle, wall) -> int:
         collision_threshold: int = 5
+
+        #start off with assumption that the wall is completely destroyed
+        wall_destroyed = True
+        for row_count, row in enumerate(wall.blocks):
+            for item_count, block in enumerate(row):
+                #check collision
+                if self.rect.colliderect(block.rectangle):
+                    #check if collision was from above
+                    if abs(self.rect.bottom - block.rectangle.top) < collision_threshold  and self.speed_y > 0:
+                        self.speed_y *= -1
+                    #check if collision was from below
+                    if abs(self.rect.top - block.rectangle.bottom) < collision_threshold  and self.speed_y < 0:
+                        self.speed_y *= -1
+                    #check if collision was from left
+                    if abs(self.rect.right - block.rectangle.left) < collision_threshold  and self.speed_x > 0:
+                        self.speed_x *= -1
+                    #check if collision was from right
+                    if abs(self.rect.left - block.rectangle.right) < collision_threshold  and self.speed_x < 0:
+                        self.speed_x *= -1
+
+                    #reduce block strength
+                    if block.strength > 1:
+                        block.strength -= 1
+                    else:
+                        block.rectangle = (0,0,0,0)#reset the rectangle properties
+                #check if block still exists, then wall is not destroyed
+                if block.rectangle != (0,0,0,0):
+                    wall_destroyed = False
+        #check if wall is destroyed
+        if wall_destroyed == True:
+            self.game_over = 1 #won the game
+
+
+
+
         #check for wall collision
         if self.rect.left < 0 or self.rect.right > GV.screen_width:
             self.speed_x *= -1
@@ -90,7 +125,7 @@ while run:
 
     #draw ball
     ball.draw()
-    ball.move(player_paddle)
+    ball.move(player_paddle, wall)
 
 
     for event in pygame.event.get():
