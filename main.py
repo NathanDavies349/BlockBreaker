@@ -5,6 +5,15 @@ import PaddleAndBall as PB
 import pygame
 from pygame.locals import *
 
+#------- T0 Do ---------
+#Add start menu
+#Add levels
+#Look into day/night mode
+#-----------------------
+
+
+
+
 #function to output text to screen
 def draw_text(text, font, text_colour, x, y, window):
     img = font.render(text, True, text_colour)
